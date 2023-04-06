@@ -11,13 +11,9 @@ def solution(p: float, x: np.array) -> tuple:
     # Это будет вашим решением
     # Не меняйте название функции и её аргументы
     alpha = 1 - p
-    n = len(x)
-    time = 62
-    
-    left_edge_gamma = gamma.ppf(q = alpha / 2, a = n, scale = 1 / n)
-    right_edge_gamma = gamma.ppf(q = 1 - alpha / 2, a = n, scale = 1 / n)
-    
-    lower = (left_edge_gamma + 2*x.mean() - 1/2) / (time ** 2)
-    upper = (right_edge_gamma + 2*x.mean() - 1/2) / (time ** 2)
-    
+    a = (x-(1/2-np.exp(1)))*2/3844
+
+    lower = a.mean() - np.sqrt(np.var(a)) * norm.ppf(1 - alpha / 2) / np.sqrt(len(a))
+    upper = a.mean() - np.sqrt(np.var(a)) * norm.ppf(alpha / 2) / np.sqrt(len(a))
+
     return (lower, upper)
